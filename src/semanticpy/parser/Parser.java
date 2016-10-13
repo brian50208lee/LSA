@@ -53,10 +53,22 @@ public class Parser {
 		
 		ArrayList<String> tokenised_vocabulary_list = _tokenise(vocabulary_string.toString());
 				
-		
-		return null;
+		ArrayList<String> clean_word_list = _remove_stop_words(tokenised_vocabulary_list);
+    	return clean_word_list;
 	}
 
+	private ArrayList<String> _remove_stop_words(ArrayList<String> tokenised_vocabulary_list) {
+		ArrayList<String> resultList = new ArrayList<String>();
+		for(String word : tokenised_vocabulary_list){
+			if (!stopwords.contains(word)) {
+				resultList.add(word);
+				
+			} else {
+
+			}
+		}
+		return resultList;
+	}
 	private ArrayList<String> _tokenise(String string) {
 		//System.out.println(string);
 		string = _clean(string);

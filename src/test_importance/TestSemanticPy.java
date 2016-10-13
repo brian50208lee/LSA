@@ -3,15 +3,10 @@ package test_importance;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
-
-import com.sun.tracing.dtrace.ProviderAttributes;
 
 import semanticpy.vector_space.VectorSpace;
 

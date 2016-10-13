@@ -13,6 +13,7 @@ public class PorterStemmer {
 	}
 
 	public String stem(String p, int i, int j) {
+		//System.out.printf("#   %-30s",p );
         this.b = p;
         this.k = j;
         this.k0 = i;
@@ -26,22 +27,95 @@ public class PorterStemmer {
 		step4();
 		step5();
 		
-		
+		//System.out.println(""+b.substring(k0, k+1));
 		return b.substring(k0, k+1);
 	}
 
 	private void step5() {
-		// TODO Auto-generated method stub
+        /*"""step5() removes a final -e if m() > 1, and changes -ll to -l if
+        m() > 1.
+        """*/
+		
+        this.j = this.k;
+        if( this.b.charAt(this.k) == 'e'){
+            int a = this.m();
+            if( a > 1 || (a == 1 &&  !cvc(this.k-1))){
+                this.k = this.k - 1 ;
+            }
+        }
+        if( this.b.charAt(this.k) == 'l' && doublec(this.k) && m() > 1){
+            this.k = this.k -1 ;
+        }
 		
 	}
 
 	private void step4() {
-		// TODO Auto-generated method stub
-		
+        //"""step4() takes off -ant, -ence etc., in context <c>vcvc<v>."""
+        if( b.charAt(k - 1) == 'a'){
+            if( ends("al")) ;//pass
+            else return;
+        }else if( b.charAt(k - 1) == 'c'){
+            if( ends("ance"));// pass
+            else if( ends("ence"));// pass
+            else return;
+        }else if( b.charAt(k - 1) == 'e'){
+            if( ends("er"));// pass
+            else return;
+        }else if( b.charAt(k - 1) == 'i'){
+            if( ends("ic"));// pass
+            else  return;
+        }else if( b.charAt(k - 1) == 'l'){
+            if( ends("able"));// pass
+            else if( ends("ible"));// pass
+            else return;
+        }else if( b.charAt(k - 1) == 'n'){
+            if( ends("ant"));// pass
+            else if( ends("ement")); // pass
+            else if( ends("ment")); // pass
+            else if( ends("ent")); //pass
+            else return;
+        }else if( b.charAt(k - 1) == 'o'){
+            if( ends("ion") && (b.charAt(j) == 's' || b.charAt(j) == 't')); // pass
+            else if( ends("ou") ); //pass
+            //# takes care of -ous
+            else  return;
+        }else if( b.charAt(k - 1) == 's'){
+            if( ends("ism")); //pass
+            else return;
+        }else if( b.charAt(k - 1) == 't'){
+            if( ends("ate")); //pass
+            else if( ends("iti")); //pass
+            else return;
+		}else if( b.charAt(k - 1) == 'u'){
+            if( ends("ous")); //pass
+            else return;
+		}else if( b.charAt(k - 1) == 'v'){
+            if( ends("ive")); //pass
+            else return;
+		}else if( b.charAt(k - 1) == 'z'){
+            if( ends("ize")); //pass
+            else return;
+		}else{
+            return;
+		}
+        if( m() > 1){
+            k = j;
+        }
 	}
 
 	private void step3() {
-		// TODO Auto-generated method stub
+        //"""step3() dels with -ic-, -full, -ness etc. similar strategy to step2."""
+        if( this.b.charAt(this.k) == 'e')
+            if(ends("icate"))     r("ic");
+            else if(ends("ative"))  r("");
+            else if( ends("alize"))   r("al");
+        else if( this.b.charAt(this.k) == 'i')
+            if( ends("iciti"))     r("ic");
+        else if( this.b.charAt(this.k) == 'l')
+            if( ends("ical") )     r("ic");
+            else if( ends("ful") )    r("");
+        else if( this.b.charAt(this.k) == 's')
+            if( ends("ness"))      r("");
 		
 	}
 
@@ -50,45 +124,55 @@ public class PorterStemmer {
         so -ization ( = -ize plus -ation) maps to -ize etc. note that the
         string before the suffix must give m() > 0.
         */
-        if self.b[self.k - 1] == 'a':
-            if self.ends("ational"):   self.r("ate")
-            elif self.ends("tional"):  self.r("tion")
-        elif self.b[self.k - 1] == 'c':
-            if self.ends("enci"):      self.r("ence")
-            elif self.ends("anci"):    self.r("ance")
-        elif self.b[self.k - 1] == 'e':
-            if self.ends("izer"):      self.r("ize")
-        elif self.b[self.k - 1] == 'l':
-            if self.ends("bli"):       self.r("ble") # --DEPARTURE--
-            # To match the published algorithm, replace this phrase with
-            #   if self.ends("abli"):      self.r("able")
-            elif self.ends("alli"):    self.r("al")
-            elif self.ends("entli"):   self.r("ent")
-            elif self.ends("eli"):     self.r("e")
-            elif self.ends("ousli"):   self.r("ous")
-        elif self.b[self.k - 1] == 'o':
-            if self.ends("ization"):   self.r("ize")
-            elif self.ends("ation"):   self.r("ate")
-            elif self.ends("ator"):    self.r("ate")
-        elif self.b[self.k - 1] == 's':
-            if self.ends("alism"):     self.r("al")
-            elif self.ends("iveness"): self.r("ive")
-            elif self.ends("fulness"): self.r("ful")
-            elif self.ends("ousness"): self.r("ous")
-        elif self.b[self.k - 1] == 't':
-            if self.ends("aliti"):     self.r("al")
-            elif self.ends("iviti"):   self.r("ive")
-            elif self.ends("biliti"):  self.r("ble")
-        elif self.b[self.k - 1] == 'g': # --DEPARTURE--
-            if self.ends("logi"):      self.r("log")
-        # To match the published algorithm, delete this phrase
+		//System.out.print(this.b);
+        if( this.b.charAt(this.k - 1) == 'a'){
+            if( ends("ational") )	r("ate");
+            else if( ends("tional"))r("tion");
+        }else if( this.b.charAt(this.k - 1) == 'c'){
+            if( ends("enci") )     	r("ence");
+            else if( ends("anci"))  r("ance");
+        }else if( b.charAt(this.k - 1) == 'e'){
+            if( ends("izer") )      r("ize");
+        }else if( this.b.charAt(this.k - 1) == 'l'){
+            if( ends("bli") )       r("ble"); 
+            //# --DEPARTURE--
+            //# To match the published algorithm, replace this phrase with
+            //#   if ends("abli"):      r("able")
+            else if(ends("alli"))    	r("al");
+            else if(ends("entli"))   	r("ent");
+            else if(ends("eli"))		r("e");
+            else if(ends("ousli"))   	r("ous");
+        }else if( this.b.charAt(this.k - 1) == 'o'){
+            if(ends("ization"))   r("ize");
+            else if (ends("ation") )  r("ate");
+            else if (ends("ator"))   r("ate");
+        }else if( this.b.charAt(this.k - 1) == 's'){
+            if (ends("alism"))     r("al");
+            else if (ends("iveness")) r("ive");
+            else if (ends("fulness")) r("ful");
+            else if (ends("ousness")) r("ous");
+        }else if( this.b.charAt(this.k - 1) == 't'){
+            if (ends("aliti"))     r("al");
+            else if( ends("iviti"))   r("ive");
+            else if( ends("biliti"))  r("ble");
+        }else if( b.charAt(this.k - 1) == 'g'){ //# --DEPARTURE--
+            if( ends("logi"))      r("log");
+        }
+        //# To match the published algorithm, delete this phrase
 		
+	}
+
+	private void r(String s) {
+	     //  """r(s) is used further down."""
+        if( m() > 0){
+            setto(s);
+        }
 	}
 
 	private void step1c() {
         //"""step1c() turns terminal y to i when there is another vowel in the stem."""
         if (ends("y") && vowelinstem()){
-            this.b = this.b.substring(0,this.k) + 'i' + this.b.substring(this.k+1,b.length()-1);
+            this.b = this.b.substring(0,this.k) + 'i' + this.b.substring(this.k+1,b.length());
         }
 		
 	}
@@ -107,8 +191,7 @@ public class PorterStemmer {
 	            if( m() > 0){
 	                this.k = this.k - 1;
 	            }
-	        }
-	        else if( (ends("ed") || ends("ing")) && vowelinstem()){
+	        }else if( (ends("ed") || ends("ing")) && vowelinstem()){
 	            this.k = this.j ;
 	            if(ends("at"))setto("ate");
 	            else if(ends("bl"))setto("ble");
@@ -119,10 +202,10 @@ public class PorterStemmer {
 	                if( ch == 'l' || ch == 's' || ch == 'z'){
 	                    this.k = this.k + 1;
 	                }
-	            }
-	            else if(m() == 1 && cvc(this.k)){
+	            }else if(m() == 1 && cvc(this.k)){
 	                setto("e");
 	            }
+	            
 	        }
 	}
 	
@@ -157,7 +240,7 @@ public class PorterStemmer {
 
 	private boolean vowelinstem() {
         //"""vowelinstem() is TRUE <=> k0,...j contains a vowel"""
-        for( int i = this.k0; i<= this.j+1 ; i++ ){
+        for( int i = this.k0; i< this.j+1 ; i++ ){
             if (!cons(i)){
                 return true;
             }
@@ -234,7 +317,7 @@ public class PorterStemmer {
 	private void setto(String s) {
         // setto(s) sets (j+1),...k to the characters in the string s, readjusting k.
         int length = s.length();
-        this.b = this.b.substring(0,this.j+1) + s + this.b.substring(this.j+length+1,b.length()-1);
+        this.b = this.b.substring(0,this.j+1) + s + this.b.substring(this.j+length+1,b.length());
         this.k = this.j + length;
 	}
 
