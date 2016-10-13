@@ -39,6 +39,7 @@ public class VectorSpace {
 		LSA lsa = new LSA(matrix);
 		matrix = lsa.transform();
 		
+		
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix[i].length; j++) {
 				System.out.print(matrix[i][j]+" ");
@@ -76,7 +77,6 @@ public class VectorSpace {
 		//""" @pre: unique(vectorIndex) """
 
 		float vector[] = new float[vector_index_to_keyword_mapping.size()];
-		System.out.println();
 		ArrayList<String> word_list = parser.tokenize_and_remove_stop_words(new ArrayList<String>(Arrays.asList(word_string.split(" "))));
 
 		
