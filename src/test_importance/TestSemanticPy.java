@@ -40,10 +40,39 @@ public class TestSemanticPy {
         documents = all_docs;
 		
 	}
-	public static void test_similarity(){
+	public static void test_similarity() throws IOException{
 		VectorSpace vectorSpace = new VectorSpace(documents);
-		System.out.println();
-	
+		
+		System.out.println("output ...");
+		String newpath = "LSA_importance/";
+		BufferedWriter dw = new BufferedWriter(new FileWriter(new File(newpath + "doc_index")));
+		int ind = 0;
+        for( String d :vector_index_to_doc_mapping){
+            dw.write(d+" "+ind+"\n");
+            ind+=1;
+        }
+        dw.close();
+        
+        BufferedWriter tw = new BufferedWriter(new FileWriter(new File(newpath + "word_index")));
+        ind=0;
+        for(String t : vectorSpace.get_vector_index_to_keyword_mapping().keySet()){
+            tw.write(t+" "+vectorSpace.get_vector_index_to_keyword_mapping().get(t)+"\n");
+            ind+=1;
+        }
+        tw.close();
+        
+        BufferedWriter vw = new BufferedWriter(new FileWriter(new File(newpath + "TF")));
+        for(float v[] : vectorSpace.get_doc_vector()){
+            for(float n : v){
+            	//System.out.println(n);     
+                vw.write(n+" ");
+            }
+            vw.write("\n");
+        }
+        vw.close();
+        
+       vectorSpace.print_term_similarity("mile", "skin");
+        
 	}
 	
 	

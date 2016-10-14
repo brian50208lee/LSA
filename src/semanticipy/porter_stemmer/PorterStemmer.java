@@ -13,7 +13,10 @@ public class PorterStemmer {
 	}
 
 	public String stem(String p, int i, int j) {
-		//System.out.printf("#   %-30s",p );
+		if (p.equals("geographic")) {
+
+			//System.out.printf("#   %-30s",p );
+		}
         this.b = p;
         this.k = j;
         this.k0 = i;
@@ -26,7 +29,6 @@ public class PorterStemmer {
 		step3();
 		step4();
 		step5();
-		
 		//System.out.println(""+b.substring(k0, k+1));
 		return b.substring(k0, k+1);
 	}
@@ -104,18 +106,20 @@ public class PorterStemmer {
 	}
 
 	private void step3() {
+
         //"""step3() dels with -ic-, -full, -ness etc. similar strategy to step2."""
-        if( this.b.charAt(this.k) == 'e')
-            if(ends("icate"))     r("ic");
-            else if(ends("ative"))  r("");
-            else if( ends("alize"))   r("al");
-        else if( this.b.charAt(this.k) == 'i')
-            if( ends("iciti"))     r("ic");
-        else if( this.b.charAt(this.k) == 'l')
-            if( ends("ical") )     r("ic");
-            else if( ends("ful") )    r("");
-        else if( this.b.charAt(this.k) == 's')
-            if( ends("ness"))      r("");
+        if( this.b.charAt(this.k) == 'e'){
+            if(ends("icate")){     r("ic");
+            }else if(ends("ative")){  r("");
+        	}else if( ends("alize")){   r("al");}
+        }else if( this.b.charAt(this.k) == 'i'){
+            if( ends("iciti")){     r("ic");}
+        }else if( this.b.charAt(this.k) == 'l'){
+            if(ends("ical")){r("ic");
+            }else if( ends("ful") ){    r("");}
+        }else if( this.b.charAt(this.k) == 's'){
+            if( ends("ness")){      r("");}
+        }
 		
 	}
 
