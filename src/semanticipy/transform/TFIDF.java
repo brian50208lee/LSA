@@ -2,19 +2,19 @@ package semanticipy.transform;
 
 public class TFIDF extends Transform{
 	int document_total;
-	public TFIDF(float[][] matrix) {
+	public TFIDF(double[][] matrix) {
 		super(matrix);
 		document_total = matrix.length;
 	}
 	
-	public float[][] transform(){
+	public double[][] transform(){
 
 		
 		
         int rows = matrix.length;
         int cols = matrix[0].length;
 
-        float transformed_matrix[][] = matrix.clone();
+        double transformed_matrix[][] = matrix.clone();
 
         for(int row = 0 ; row < rows ; row++ ){ //#For each document
 
@@ -35,16 +35,16 @@ public class TFIDF extends Transform{
         return transformed_matrix;
 	}
 
-	private float _tf_idf(int row, int col, float word_total) {
-		float term_frequency = matrix[row][col] / word_total;
-		float inverse_document_frequency = (float)Math.log(Math.abs(document_total /_get_term_document_occurences(col)));
+	private double _tf_idf(int row, int col, double word_total) {
+		double term_frequency = matrix[row][col] / word_total;
+		double inverse_document_frequency = (double)Math.log(Math.abs(document_total /_get_term_document_occurences(col)));
 		return term_frequency*inverse_document_frequency;
 	}
 
-	private float _get_term_document_occurences(int col) {
+	private double _get_term_document_occurences(int col) {
         //""" Find how many documents a term occurs in"""
 
-        float term_document_occurrences = 0;
+		double term_document_occurrences = 0;
 
         int rows = matrix.length;
         int cols = matrix[0].length;

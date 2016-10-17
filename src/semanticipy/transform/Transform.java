@@ -1,8 +1,8 @@
 package semanticipy.transform;
 
 public abstract class Transform{
-	float matrix[][];
-	public Transform(float matrix[][]){
+	double matrix[][];
+	public Transform(double matrix[][]){
 		this.matrix=matrix;
 	}
 }

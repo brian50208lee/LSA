@@ -62,8 +62,8 @@ public class TestSemanticPy {
         tw.close();
         
         BufferedWriter vw = new BufferedWriter(new FileWriter(new File(newpath + "TF")));
-        for(float v[] : vectorSpace.get_doc_vector()){
-            for(float n : v){
+        for(double v[] : vectorSpace.get_doc_vector()){
+            for(double n : v){
             	//System.out.println(n);     
                 vw.write(n+" ");
             }
@@ -71,7 +71,6 @@ public class TestSemanticPy {
         }
         vw.close();
         
-       vectorSpace.print_term_similarity("mile", "skin");
         
 	}
 	

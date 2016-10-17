@@ -15,9 +15,9 @@ import semanticpy.parser.Parser;;
 
 public class VectorSpace {
 	Parser parser;
-	float collection_of_document_term_vectors[][];
+	double collection_of_document_term_vectors[][];
 	HashMap<String, Integer> vector_index_to_keyword_mapping;
-	float collection_of_term_document_vectors[][];
+	double collection_of_term_document_vectors[][];
 	public VectorSpace(ArrayList<String> documents) {
 		this(documents,new Class[]{TFIDF.class,LSA.class});
 	}
@@ -32,7 +32,7 @@ public class VectorSpace {
 		vector_index_to_keyword_mapping = _get_vector_key_index(documents);
 		
 		
-		float matrix[][] = new float[documents.size()][0];
+		double matrix[][] = new double[documents.size()][0];
 		for (int i = 0; i < documents.size(); i++) {
 			matrix[i] = _make_vector(documents.get(i));
 		}
@@ -64,21 +64,21 @@ public class VectorSpace {
 		collection_of_document_term_vectors = matrix;
 		collection_of_term_document_vectors = _build_term_document_vector();
 	}
-	private float[][] _build_term_document_vector() {
-		float word_vectors[][] = new float[collection_of_document_term_vectors[0].length][0];
+	private double[][] _build_term_document_vector() {
+		double word_vectors[][] = new double[collection_of_document_term_vectors[0].length][0];
 		
-		ArrayList<ArrayList<Float>> list = new ArrayList<ArrayList<Float>>();
+		ArrayList<ArrayList<Double>> list = new ArrayList<ArrayList<Double>>();
 		for(int i = 0 ; i < collection_of_document_term_vectors[0].length ; i++){
-			list.add(new ArrayList<Float>());
+			list.add(new ArrayList<Double>());
 		}
-		for(float v[] : collection_of_document_term_vectors){
+		for(double v[] : collection_of_document_term_vectors){
 			for(int i = 0 ; i < v.length ; i++){
 				list.get(i).add(v[i]);
 			}
 		}
 		//convert to matrix[][]
 		for (int i = 0 ; i < list.size() ; i++) {
-			word_vectors[i] = new float[list.get(i).size()];
+			word_vectors[i] = new double[list.get(i).size()];
 			for (int j = 0; j < list.get(i).size(); j++) {
 				word_vectors[i][j] = list.get(i).get(j);
 			}
@@ -87,12 +87,12 @@ public class VectorSpace {
 		return word_vectors;
 	}
 
-	private float[] _make_vector(String word_string) {
+	private double[] _make_vector(String word_string) {
 		//""" @pre: unique(vectorIndex) """
 		
 		//System.out.println(word_string);
 
-		float vector[] = new float[vector_index_to_keyword_mapping.size()];
+		double vector[] = new double[vector_index_to_keyword_mapping.size()];
 		ArrayList<String> word_list = parser.tokenize_and_remove_stop_words(new ArrayList<String>(Arrays.asList(word_string.split(" "))));
 
 		
@@ -105,7 +105,7 @@ public class VectorSpace {
 	}
 
 	public void print_matrix(){};
-	public float[][] get_doc_vector(){
+	public double[][] get_doc_vector(){
 		return collection_of_document_term_vectors;
 	};
 	private float _cosine(){
@@ -162,8 +162,16 @@ public class VectorSpace {
 		System.out.println(_cosine(collection_of_term_document_vectors[i1],collection_of_term_document_vectors[i2]));
 		//print "End"
 	}
+	public double get_term_similarity(String word1,String word2){
+		//System.out.println(vector_index_to_keyword_mapping.get(word1));
+		//System.out.println(vector_index_to_keyword_mapping.get(word2));
+		int i1=vector_index_to_keyword_mapping.get(word1);
+		int i2=vector_index_to_keyword_mapping.get(word2);
+		return _cosine(collection_of_term_document_vectors[i1],collection_of_term_document_vectors[i2]);
+		//print "End"
+	}
 
-	private double _cosine(float[] vector1, float[] vector2) {
+	private double _cosine(double[] vector1, double[] vector2) {
 		double dot = 0;
 		for(int i = 0 ; i < vector1.length; i++ ){
 			dot += vector1[i]*vector2[i];
@@ -183,5 +191,10 @@ public class VectorSpace {
 		
 		
 		return dot / (norm1*norm2);
+	}
+
+	public HashMap<String, Integer> get_word_vector() {
+		// TODO Auto-generated method stub
+		return vector_index_to_keyword_mapping;
 	}
 }
