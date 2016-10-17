@@ -43,10 +43,6 @@ public class VectorSpace {
 		TFIDF tfidf = new TFIDF(matrix);
 		matrix = tfidf.transform();
 		
-		for (int i = 0; i < matrix[0].length; i++) {
-			System.out.print(matrix[0][i]+" ");
-		}
-		System.out.println();
 		
 		//LSA
 		LSA lsa = new LSA(matrix);

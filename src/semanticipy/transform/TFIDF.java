@@ -8,8 +8,12 @@ public class TFIDF extends Transform{
 	}
 	
 	public float[][] transform(){
+
+		
+		
         int rows = matrix.length;
         int cols = matrix[0].length;
+
         float transformed_matrix[][] = matrix.clone();
 
         for(int row = 0 ; row < rows ; row++ ){ //#For each document
@@ -26,6 +30,8 @@ public class TFIDF extends Transform{
                 }
             }
         }
+        
+
         return transformed_matrix;
 	}
 
